@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema acadêmico para estimativa do tempo de preparo de pedidos.">
+    <title>Restaurante — Previsão de Preparo</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+    <div class="app-shell">
+        <header class="topbar"> <a class="brand" href="{{ url_for('index') }}" aria-label="Restaurante, página inicial">
+                <span class="brand-mark" aria-hidden="true">R</span>
+                <span class="brand-copy"> <span class="brand-name">Restaurante</span> <span
+                        class="brand-subtitle">Previsão de tempo de preparo</span> </span> </a>
+            <div class="system-status"> <span class="status-dot" aria-hidden="true"></span> <span>Sistema
+                    disponível</span> </div>
+        </header>
+        <main class="main-content">
+            <section class="page-heading" aria-labelledby="page-title">
+                <div>
+                    <p class="eyebrow">PAINEL DE OPERAÇÕES</p>
+                    <h1 id="page-title">Previsão de preparo</h1>
+                    <p class="page-description"> Consulte uma estimativa de preparo com base no histórico de pedidos
+                        registrado. </p>
+                </div>
+            </section>
+            <div class="workspace">
+                <section class="panel prediction-panel" aria-labelledby="form-title">
+                    <div class="panel-heading">
+                        <div>
+                            <h2 id="form-title">Estimar novo pedido</h2>
+                            <p>Informe a quantidade de itens do pedido.</p>
+                        </div> <span class="section-index" aria-hidden="true">01</span>
+                    </div>
+                    <form class="prediction-form" method="POST" action="{{ url_for('index') }}">
+                        <div class="form-field"> <label for="quantidade_itens"> Quantidade de itens </label>
+                            <input type="number" id="quantidade_itens" name="quantidade_itens" min="1" step="1"
+                                inputmode="numeric" placeholder="Ex.: 4"
+                                value="{{ quantidade_itens if quantidade_itens is not none else '' }}" required
+                                aria-describedby="quantity-help">
+                            <p class="field-help" id="quantity-help"> Informe um número inteiro maior que zero. </p>
+                        </div>
+                        <button class="button-primary" type="submit"> Estimar tempo <span aria-hidden="true">→</span>
+                        </button>
+                    </form>
+                    {% if erro %} <div class="message message-error" role="alert"> <strong>Não foi possível realizar a
+                            previsão.</strong>
+                        <p>{{ erro }}</p>
+                    </div> {% endif %}
+                    {% if tempo_estimado is not none and not erro %} <section class="result-card"
+                        aria-labelledby="result-title" aria-live="polite">
+                        <div class="result-topline"> <span class="result-label" id="result-title"> Tempo estimado
+                            </span> <span class="result-status">Previsão calculada</span> </div>
+                        <p class="result-value"> {{ "%.2f"|format(tempo_estimado) }} <span>minutos</span> </p>
+                        <p class="result-description"> Estimativa para um pedido com <strong>{{ quantidade_itens
+                                }}</strong> {% if quantidade_itens == 1 %} item. {% else %} itens. {% endif %} </p>
+                    </section> {% else %} {% if not erro %} <section class="result-placeholder"
+                        aria-label="Aguardando previsão"> <span class="placeholder-symbol" aria-hidden="true">—</span>
+                        <div>
+                            <h3>Aguardando previsão</h3>
+                            <p> O tempo estimado será exibido aqui após o envio dos dados do pedido. </p>
+                        </div>
+                    </section> {% endif %} {% endif %}
+                </section>
+                <aside class="panel model-panel" aria-labelledby="model-title">
+                    <div class="panel-heading">
+                        <div>
+                            <h2 id="model-title">Informações do modelo</h2>
+                            <p>Dados sobre a base utilizada na estimativa.</p>
+                        </div>
+                    </div>
+                    {% set tem_indicadores = ( quantidade_pedidos is defined and quantidade_pedidos is not none ) or (
+                    erro_medio is defined and erro_medio is not none ) or ( ultima_atualizacao is defined and
+                    ultima_atualizacao ) %}
+                    {% if tem_indicadores %} <dl class="metrics-list"> {% if quantidade_pedidos is defined and
+                        quantidade_pedidos is not none %} <div class="metric-row">
+                            <dt>Pedidos no treinamento</dt>
+                            <dd>{{ quantidade_pedidos }}</dd>
+                        </div> {% endif %}
+                        {% if erro_medio is defined and erro_medio is not none %} <div class="metric-row">
+                            <dt>Erro médio do modelo</dt>
+                            <dd>{{ "%.2f"|format(erro_medio) }} min</dd>
+                        </div> {% endif %}
+                        {% if ultima_atualizacao is defined and ultima_atualizacao %} <div class="metric-row">
+                            <dt>Última atualização</dt>
+                            <dd>{{ ultima_atualizacao }}</dd>
+                        </div> {% endif %} </dl> {% else %} <div class="metrics-empty"> <span class="empty-indicator"
+                            aria-hidden="true"></span>
+                        <p> Indicadores indisponíveis no momento. Serão exibidos quando fornecidos pelo sistema. </p>
+                    </div> {% endif %}
+                    <div class="model-note"> <span class="note-label">Método utilizado</span>
+                        <p>Regressão linear simples</p> <span class="note-caption"> Cálculo realizado no backend Python.
+                        </span>
+                    </div>
+                </aside>
+            </div>
+            <section class="disclaimer" aria-label="Aviso sobre as estimativas"> <span class="disclaimer-mark"
+                    aria-hidden="true">i</span>
+                <p> O tempo apresentado é uma estimativa estatística. O preparo real pode variar conforme os pratos, a
+                    equipe e as condições de funcionamento da cozinha. </p>
+            </section>
+        </main>
+        <footer class="footer"> <span>Restaurante · Projeto acadêmico</span> <span>Previsão de tempo de preparo</span>
+        </footer>
+    </div>
+</body>
+
+</html>

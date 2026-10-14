@@ -1,0 +1,680 @@
+/* ==================================================   1. Variáveis e configurações gerais   ================================================== */
+:root {
+    color-scheme: light;
+    --color-page: #f3f5f3;
+    --color-surface: #ffffff;
+    --color-surface-soft: #f7f9f7;
+    --color-text: #252d28;
+    --color-text-secondary: #69736c;
+    --color-text-muted: #879089;
+    --color-primary: #245b43;
+    --color-primary-hover: #194832;
+    --color-primary-soft: #eaf2ed;
+    --color-border: #e1e6e1;
+    --color-border-strong: #cbd4cc;
+    --color-error: #a43737;
+    --color-error-bg: #fff3f1;
+    --color-error-border: #efd2ce;
+    --shadow-panel: 0 2px 10px rgb(25 43 32 / 4%);
+    --radius-small: 7px;
+    --radius-medium: 11px;
+    --radius-large: 15px;
+    --content-width: 1120px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-width: 320px;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--color-page);
+    color: var(--color-text);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button,
+a,
+input {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid rgb(36 91 67 / 28%);
+    outline-offset: 3px;
+}
+
+/* ==================================================   2. Estrutura principal   ================================================== */
+.app-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 78px;
+    padding: 16px max(28px, calc((100% - var(--content-width)) / 2));
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.brand-mark {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    place-items: center;
+    border-radius: var(--radius-medium);
+    background: var(--color-primary);
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.brand-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.brand-name {
+    color: var(--color-text);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+.brand-subtitle {
+    color: var(--color-text-secondary);
+    font-size: 12px;
+}
+
+.system-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface-soft);
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    border-radius: 50%;
+    background: var(--color-primary);
+}
+
+.main-content {
+    width: 100%;
+    max-width: var(--content-width);
+    flex: 1;
+    margin: 0 auto;
+    padding: 40px 28px 32px;
+}
+
+/* ==================================================   3. Título da página   ================================================== */
+.page-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 26px;
+}
+
+.eyebrow {
+    margin: 0 0 8px;
+    color: var(--color-primary);
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: 1.35px;
+}
+
+.page-heading h1 {
+    margin: 0;
+    font-size: clamp(25px, 3vw, 31px);
+    font-weight: 700;
+    letter-spacing: -1.1px;
+    line-height: 1.2;
+}
+
+.page-description {
+    max-width: 610px;
+    margin: 10px 0 0;
+    color: var(--color-text-secondary);
+    font-size: 14px;
+}
+
+/* ==================================================   4. Painéis e cabeçalhos   ================================================== */
+.workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(270px, 1fr);
+    align-items: start;
+    gap: 20px;
+}
+
+.panel {
+    min-width: 0;
+    padding: 25px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-large);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-panel);
+}
+
+.panel-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 21px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.panel-heading h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.25px;
+}
+
+.panel-heading p {
+    margin: 5px 0 0;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+}
+
+.section-index {
+    display: grid;
+    width: 31px;
+    height: 31px;
+    flex: 0 0 31px;
+    place-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    color: var(--color-text-muted);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* ==================================================   5. Formulário de previsão   ================================================== */
+.prediction-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    padding-top: 23px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.form-field label {
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.form-field input {
+    width: 100%;
+    min-height: 47px;
+    padding: 11px 13px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: var(--color-text);
+    transition: border-color 120ms ease;
+}
+
+.form-field input::placeholder {
+    color: #a0a8a1;
+}
+
+.form-field input:hover {
+    border-color: #aab8ac;
+}
+
+.form-field input:focus {
+    border-color: var(--color-primary);
+    outline: 3px solid rgb(36 91 67 / 12%);
+    outline-offset: 1px;
+}
+
+.field-help {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 11px;
+}
+
+.button-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 18px;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-small);
+    background: var(--color-primary);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.button-primary:hover {
+    border-color: var(--color-primary-hover);
+    background: var(--color-primary-hover);
+}
+
+.button-primary:active {
+    background: #143a29;
+}
+
+.button-primary:disabled {
+    border-color: var(--color-border);
+    background: #e5e9e5;
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+/* ==================================================   6. Resultado da previsão   ================================================== */
+.result-card {
+    margin-top: 27px;
+    padding: 19px;
+    border: 1px solid #d5e5d9;
+    border-radius: var(--radius-medium);
+    background: var(--color-primary-soft);
+}
+
+.result-topline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.result-label {
+    color: #385d46;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.result-status {
+    padding: 4px 7px;
+    border: 1px solid #d5e5d9;
+    border-radius: 4px;
+    background: rgb(255 255 255 / 65%);
+    color: #42694f;
+    font-size: 10px;
+}
+
+.result-value {
+    margin: 12px 0 5px;
+    color: var(--color-primary);
+    font-size: clamp(29px, 4vw, 38px);
+    font-weight: 750;
+    letter-spacing: -1.5px;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.result-value span {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+.result-description {
+    margin: 0;
+    color: #5d6d61;
+    font-size: 12px;
+}
+
+.result-description strong {
+    color: var(--color-text);
+}
+
+.result-placeholder {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin-top: 27px;
+    padding: 18px;
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-medium);
+    background: var(--color-surface-soft);
+}
+
+.placeholder-symbol {
+    display: grid;
+    width: 35px;
+    height: 35px;
+    flex: 0 0 35px;
+    place-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background: #ffffff;
+    color: var(--color-text-muted);
+    font-size: 19px;
+}
+
+.result-placeholder h3 {
+    margin: 1px 0 4px;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.result-placeholder p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* ==================================================   7. Mensagens de erro   ================================================== */
+.message-error {
+    margin-top: 20px;
+    padding: 14px;
+    border: 1px solid var(--color-error-border);
+    border-radius: var(--radius-small);
+    background: var(--color-error-bg);
+    color: var(--color-error);
+}
+
+.message-error strong {
+    display: block;
+    font-size: 12px;
+}
+
+.message-error p {
+    margin: 5px 0 0;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+/* ==================================================   8. Indicadores do modelo   ================================================== */
+.metrics-list {
+    margin: 0;
+    padding: 4px 0 0;
+}
+
+.metric-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.metric-row dt {
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.metric-row dd {
+    max-width: 55%;
+    margin: 0;
+    color: var(--color-text);
+    font-size: 13px;
+    font-weight: 700;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.metrics-empty {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 19px;
+    padding: 14px 12px;
+    border-radius: var(--radius-small);
+    background: var(--color-surface-soft);
+}
+
+.empty-indicator {
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    margin-top: 6px;
+    border-radius: 50%;
+    background: #a3ada5;
+}
+
+.metrics-empty p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    line-height: 1.65;
+}
+
+.model-note {
+    margin-top: 22px;
+    padding: 15px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+}
+
+.note-label {
+    color: var(--color-text-secondary);
+    font-size: 11px;
+}
+
+.model-note p {
+    margin: 6px 0 4px;
+    color: var(--color-primary);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.note-caption {
+    color: var(--color-text-muted);
+    font-size: 11px;
+}
+
+/* ==================================================   9. Aviso e rodapé   ================================================== */
+.disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    margin-top: 21px;
+    padding: 15px 17px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background: rgb(255 255 255 / 65%);
+}
+
+.disclaimer-mark {
+    display: grid;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    place-items: center;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 50%;
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.disclaimer p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 20px 28px 24px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 11px;
+}
+
+/* ==================================================   10. Responsividade   ================================================== */
+@media (min-width: 1200px) {
+    .main-content {
+        padding-top: 46px;
+    }
+}
+
+@media (max-width: 760px) {
+    .topbar {
+        min-height: 70px;
+        padding: 14px 20px;
+    }
+
+    .main-content {
+        padding: 30px 20px 25px;
+    }
+
+    .workspace {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .panel {
+        padding: 21px;
+    }
+
+    .footer {
+        padding: 18px 20px 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .topbar {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .brand {
+        gap: 9px;
+    }
+
+    .brand-mark {
+        width: 37px;
+        height: 37px;
+        flex-basis: 37px;
+        font-size: 20px;
+    }
+
+    .brand-name {
+        font-size: 15px;
+    }
+
+    .brand-subtitle {
+        max-width: 180px;
+        font-size: 10px;
+    }
+
+    .system-status {
+        gap: 6px;
+        padding: 6px 8px;
+        font-size: 10px;
+    }
+
+    .main-content {
+        padding: 26px 15px 22px;
+    }
+
+    .page-heading {
+        margin-bottom: 21px;
+    }
+
+    .page-heading h1 {
+        font-size: 26px;
+    }
+
+    .page-description {
+        font-size: 13px;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+    .panel-heading h2 {
+        font-size: 15px;
+    }
+
+    .result-card {
+        padding: 15px;
+    }
+
+    .result-value {
+        font-size: 31px;
+    }
+
+    .footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}

@@ -2,16 +2,34 @@
 import sqlite3
 import numpy as np
 
+CAMINHO_BANCO = "restaurante_migrado.db"
 def buscar_dados():
-    conexao = sqlite3.connect("restaurante.db")
-    cursor = conexao.cursor()
-    cursor.execute("""
-        SELECT quantidade_itens, tempo_preparo_minutos
-        FROM pedidos
-    """)
+    conexao = sqlite3.connect(CAMINHO_BANCO)
+    try:
+        cursor = conexao.cursor()
 
-    registros = cursor.fetchall()
-    conexao.close()
+        cursor.execute("""
+            SELECT
+                SUM(i.quantidade) AS quantidade_itens,
+                p.tempo_preparo_minutos
+            FROM pedidos AS p
+            INNER JOIN itens_pedido AS i
+                ON p.id_pedido = i.id_pedido
+            GROUP BY
+                p.id_pedido,
+                p.tempo_preparo_minutos
+            ORDER BY p.id_pedido
+        """)
+
+        registros = cursor.fetchall()
+
+    finally:
+        conexao.close()
+
+    if len(registros) < 2:
+        raise ValueError(
+            "São necessários pelo menos dois pedidos com itens."
+        )
 
     X = [registro[0] for registro in registros]
     Y = [registro[1] for registro in registros]
@@ -63,9 +81,17 @@ if __name__ == "__main__":
     print("Quantidade de pedidos: ", len(X))
     beta0_manual, beta1_manual = calcular_regressao_manual(X,Y)
 
-    print("Regressão Calculada manualmente:")
-    print("Beta 0: ", beta0_manual)
-    print("Beta 1: ", beta1_manual)
+    print("Pedidos Utilizados:", len(X))
+    print("Coeficiente Beta 0: ", round(beta0_manual,4))
+    print("Coeficiente Beta 1: ", round(beta1_manual,4))
+
+    quantidade_teste = 4
+    previsao = beta0_manual +beta1_manual *quantidade_teste
+
+    print(
+        f"Previsão para {quantidade_teste} unidades: "
+        f"{previsao:.2f} minutos"
+    )
 
     # -----------COMPARAÇÃO USANDO A BILBIOTECA NUMPY -------------
     #calcula os coeficientes usando NumPy
